@@ -1,0 +1,60 @@
+; ************************************************************
+;
+; project for TEST PWM ATmega16
+
+; ************************************************************
+; Micro + software running
+; ------------------------------------------------------------
+
+.MICRO     "ATmega8"
+.TOOLCHAIN "GENERIC"
+.TARGET    "twe.hex"  ; Generated externally
+.COFF      "twe.cof"  ;    "          "
+.SOURCE    "twe__.c"  ; CodeVision adds a '__' to the filename
+                       ; in the generated COFF files.
+
+
+;.TRACE
+
+
+.CLOCK 8meg
+
+
+.POWER VDD = 5  VSS = 0
+
+
+; ==========================================================
+; LP Filter
+
+R1  DAC  PD5 500k; filter resistor
+
+C10 DAC VSS 10n; filter CAP
+
+
+D1 VDD res16 ; LED diode 1 on control panel.
+R16 res16 PB5 430
+
+R0  VDD  PD2 500k
+R12 VDD  PD3 500k
+
+
+K0 PD2 VSS
+K4 PD3 VSS
+
+; ===================================================
+; Windows Terminal simulation in VMLAB CONTROL Panal
+
+X1 TTY(115200 8) PD0 PD1
+
+
+; ===================================================
+; Signals that will be ploted in SCOPE window
+
+.plot V(PB4) V(PB5)
+
+
+
+
+
+
+
