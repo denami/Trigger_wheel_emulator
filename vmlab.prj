@@ -50,7 +50,8 @@ X1 TTY(115200 8) PD0 PD1
 ; ===================================================
 ; Signals that will be ploted in SCOPE window
 
-.plot V(PB4) V(PB5)
+.plot V(PB4) V(PB5) V(PD2) V(PD3)
+
 
 
 

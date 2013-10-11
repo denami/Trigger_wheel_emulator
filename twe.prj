@@ -93,7 +93,7 @@ WarningDataStackUsage=1
 WarningDataStackRecursion=1
 WarningHardwareStackLow=1
 DebugBootLoader=0
-Build=56
+Build=1
 UseEEPROMLocation0=1
 [DefinedSymbols]
 Count=0

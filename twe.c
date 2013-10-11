@@ -22,7 +22,10 @@ Data Stack size     : 256
 *****************************************************/
 
 #include <mega8.h>    
-#include <m8_128.h>
+#include <m8_128.h>               
+
+#define MINCOUNT 1
+#define MAXCOUNT 65530
                         
 //начальное значение количетвациклов отсчета
 unsigned int count;
@@ -37,17 +40,14 @@ unsigned char protrusion;
 //Переменная для предотвращения удердния зажатой клавиши
 unsigned char scipCurrenIteration;
 
-
-
 // External Interrupt 0 service routine
 interrupt [EXT_INT0] void ext_int0_isr(void)
 {
-        GICR&=~(1<<7);   //запрещем прерывание по INT0    
-        GICR&=~(1<<6);   //запрещем прерывание по INT1    
-        
+        GICR&=~(1<<7);   //запрещем прерывание по INT0
+        GICR&=~(1<<6);   //запрещем прерывание по INT1   
         if (scipCurrenIteration==0) {
                 // Увеличение количества отсчетов для генерации нового зуба
-                if (count<65530) {
+                if (count<MAXCOUNT) {
                         count++;
                 }
                 scipCurrenIteration=1;
@@ -57,13 +57,13 @@ interrupt [EXT_INT0] void ext_int0_isr(void)
 // External Interrupt 1 service routine
 interrupt [EXT_INT1] void ext_int1_isr(void)
 {
+        GICR&=~(1<<6);   //запрещем прерывание по INT1   
         GICR&=~(1<<7);   //запрещем прерывание по INT0    
-        GICR&=~(1<<6);   //запрещем прерывание по INT1    
         
         if (scipCurrenIteration==0) {
         
                 // Уменьшение количества отсчетов для генерации нового зуба
-                if (count>3) {
+                if (count>MINCOUNT) {
                         count--;
                 }         
                 scipCurrenIteration=1;
@@ -76,12 +76,10 @@ interrupt [EXT_INT1] void ext_int1_isr(void)
 // Timer 0 overflow interrupt service routine
 interrupt [TIM0_OVF] void timer0_ovf_isr(void)
 {              
-        #asm("cli")         
-        #asm("sei")     
-        //GICR=0b00000000;
+        //#asm("cli")         
+        //#asm("sei")     
         GICR&=~(1<<7);   //запрещем прерывание по INT0    
         GICR&=~(1<<6);   //запрещем прерывание по INT1    
-                     
         
         if (capasiter==0){          
         
@@ -110,11 +108,8 @@ interrupt [TIM0_OVF] void timer0_ovf_isr(void)
                 capasiter--;
         }
                     
-        //GICR=0b11000000;
-        GICR|=(1<<7);   //разрешаем прерывание по INT0    
-        GICR|=(1<<6);   //разрешаем прерывание по INT1    
-         
-
+        GICR|=(1<<7);   //разрешаем прерывание по INT0
+        GICR|=(1<<6);   //разрешаем прерывание по INT1
 }
 
 // Declare your global variables here
@@ -226,7 +221,7 @@ scipCurrenIteration=0;
   
 while (1)
       {
-      // Place your code here
+      //TODO Add USART send current speed.
 
       };
 }
