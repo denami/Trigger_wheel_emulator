@@ -1,4 +1,4 @@
-trigger_whell_emuator
+trigger wheel emulator
 =====================
 
 60-2 trigger wheel emulator.
